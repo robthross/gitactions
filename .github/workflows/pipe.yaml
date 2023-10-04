@@ -21,7 +21,7 @@ jobs:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
-          echo "$GCP_SA_KEY" | base64 --decode > gcp-service-account.json
+          echo "$GCP_SA_KEY" > gcp-service-account.json
           gcloud auth activate-service-account --key-file=gcp-service-account.json --project=$GCP_PROJECT_ID
           gcloud config set project $GCP_PROJECT_ID
 
