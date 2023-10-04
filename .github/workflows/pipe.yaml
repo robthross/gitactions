@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - dev
   pull_request:
     branches:
       - main
@@ -47,15 +47,15 @@ jobs:
         run: |
           sed -i "s|IMAGE_TAG|${{ steps.img_variable.outputs.img_variable }}|g" kube-deploy-dev.yaml
 
-      # - name: Conectar ao Kubernetes
-      #   env:
-      #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
-      #   run: |
-      #     kubectl config use-context my-kube-context
+      - name: Conectar ao Kubernetes
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          kubectl config use-context my-kube-context
 
       - name: Aplicar manifest no Kubernetes
         run: |
-          cat kube-deploy-dev.yaml
+          kubectl apply -f kube-deploy-dev.yaml
 
   deploy_production:
     needs: build
