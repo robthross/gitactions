@@ -45,17 +45,17 @@ jobs:
 
       - name: Realizar sed para atualizar o manifesto Kube
         run: |
-          sed -i "s|<REPLACE_WITH_IMAGE_TAG>|${{ steps.img_variable.outputs.img_variable }}|g" kube-deploy-dev.yaml
+          sed -i "s|<IMAGE_TAG>|${{ steps.img_variable.outputs.img_variable }}|g" kube-deploy-dev.yaml
 
-      - name: Conectar ao Kubernetes
-        env:
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
-        run: |
-          kubectl config use-context my-kube-context
+      # - name: Conectar ao Kubernetes
+      #   env:
+      #     KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      #   run: |
+      #     kubectl config use-context my-kube-context
 
       - name: Aplicar manifest no Kubernetes
         run: |
-          kubectl apply -f kube-deploy-dev.yaml
+          cat kube-deploy-dev.yaml
 
   deploy_production:
     needs: build
