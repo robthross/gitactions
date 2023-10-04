@@ -1,0 +1,116 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código-fonte
+        uses: actions/checkout@v2
+
+      - name: Autenticar no GCP
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        run: |
+          echo "$GCP_SA_KEY" | base64 --decode > gcp-service-account.json
+          gcloud auth activate-service-account --key-file=gcp-service-account.json --project=$GCP_PROJECT_ID
+          gcloud config set project $GCP_PROJECT_ID
+
+      - name: Instalar Kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+
+      # - name: Realizar o build da imagem Kotlin com Gradle
+      #   run: |
+      #     ./gradlew build
+
+      - name: Pegar número sequencial da branch
+        id: branch_number
+        run: echo "::set-output name=branch_number::${GITHUB_RUN_NUMBER}"
+
+      - name: Definir variável IMG
+        id: img_variable
+        run: echo "::set-output name=img_variable::my-image:${{ steps.branch_number.outputs.branch_number }}"
+
+      - name: Realizar sed para atualizar o manifesto Kube
+        run: |
+          sed -i "s|<REPLACE_WITH_IMAGE_TAG>|${{ steps.img_variable.outputs.img_variable }}|g" kube-deploy-dev.yaml
+
+      - name: Conectar ao Kubernetes
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          kubectl config use-context my-kube-context
+
+      - name: Aplicar manifest no Kubernetes
+        run: |
+          kubectl apply -f kube-deploy-dev.yaml
+
+  deploy_production:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Aprovar implantação de produção
+        id: approval
+        run: |
+          echo "Por favor, aprove a implantação de produção."
+          echo "Aprovação concedida."
+        continue-on-error: true
+      - name: Esperar aprovação
+        id: wait_for_approval
+        run: sleep 300 # 5 minutos
+
+
+  deploy_to_production:
+    needs: deploy_production
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && steps.approval.outcome == 'success'
+
+    steps:
+      - name: Autenticar no GCP (Produção)
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID_PROD }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY_PROD }}
+        run: |
+          echo "$GCP_SA_KEY" | base64 --decode > gcp-service-account-prod.json
+          gcloud auth activate-service-account --key-file=gcp-service-account-prod.json --project=$GCP_PROJECT_ID_PROD
+          gcloud config set project $GCP_PROJECT_ID_PROD
+
+      - name: Realizar o build da imagem Kotlin com Gradle (Produção)
+        run: |
+          ./gradlew build
+
+      - name: Pegar número sequencial da branch (Produção)
+        id: branch_number_prod
+        run: echo "::set-output name=branch_number_prod::${GITHUB_RUN_NUMBER}"
+
+      - name: Definir variável IMG (Produção)
+        id: img_variable_prod
+        run: echo "::set-output name=img_variable_prod::my-image-prod:${{ steps.branch_number_prod.outputs.branch_number_prod }}"
+
+      - name: Realizar sed para atualizar o manifesto Kube (Produção)
+        run: |
+          sed -i "s|<REPLACE_WITH_IMAGE_TAG>|${{ steps.img_variable_prod.outputs.img_variable_prod }}|g" kube-deploy-prod.yaml
+
+      - name: Conectar ao Kubernetes (Produção)
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG_PROD }}
+        run: |
+          kubectl config use-context my-kube-context-prod
+
+      - name: Aplicar manifest no Kubernetes (Produção)
+        run: |
+          kubectl apply -f kube-deploy-prod.yaml
