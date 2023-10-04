@@ -77,7 +77,7 @@ jobs:
   deploy_to_production:
     needs: deploy_production
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && steps.approval.outcome == 'success'
+    if: github.event_name == 'pull_request' && needs.deploy_production.result == 'success'
 
     steps:
       - name: Autenticar no GCP (Produção)
