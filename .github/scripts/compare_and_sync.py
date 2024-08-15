@@ -37,6 +37,7 @@ def sync_directories(local_dir, remote_dir, exclude_file, exclude_file2):
                 shutil.copy2(remote_file, local_file)
                 print(f"Synced {remote_file} to {local_file}")
 
+
 def main():
     local_dir = ".github"
     remote_dir = "remote_repo/.github"
