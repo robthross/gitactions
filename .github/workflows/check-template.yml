@@ -34,3 +34,5 @@ jobs:
         git add .github/
         git commit -m "Sync .github directory with remote repository"
         git push
+    env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
