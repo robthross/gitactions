@@ -13,7 +13,7 @@ jobs:
     - name: Checkout remote repository
       uses: actions/checkout@v3
       with:
-        repository: git@github.com:robthross # Substitua 'owner/repo' pelo repositório remoto
+        repository: https://github.com/robthross/static_website # Substitua 'owner/repo' pelo repositório remoto
         path: static_website
 
     - name: Compare .github directories
