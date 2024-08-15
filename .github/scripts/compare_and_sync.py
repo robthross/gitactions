@@ -31,7 +31,7 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve
                         print(f"{local_file} is already up to date with {remote_file}.")
 
 def copy_file(local_file, remote_file):
-    os.makedirs(local_file.parent, exist_ok=True)
+    os.makedirs(remote_file.parent, exist_ok=True)
     with open(remote_file, 'r') as rf, open(local_file, 'w') as lf:
         lf.writelines(rf.readlines())
     print(f"Copied {remote_file} to {local_file}.")
