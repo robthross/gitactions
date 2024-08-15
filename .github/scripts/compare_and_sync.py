@@ -13,7 +13,7 @@ def compare_and_replace_file_contents(local_dir, remote_dir, exclude_file):
                 continue
 
             if not remote_file.exists():
-                print(f"File {remote_file} does not exist in the remote repository.")
+                print(f"O Arquivo {remote_file} não existe no repositório remoto. Não será feita a comparação.")
             else:
                 with open(local_file, 'r') as lf, open(remote_file, 'r') as rf:
                     local_content = lf.readlines()
@@ -22,12 +22,12 @@ def compare_and_replace_file_contents(local_dir, remote_dir, exclude_file):
                     diff = list(difflib.unified_diff(local_content, remote_content, fromfile=str(local_file), tofile=str(remote_file)))
 
                     if diff:
-                        print(f"Differences found in {local_file}. Replacing with remote content...")
+                        print(f"Existe diferença entre o conteúdo do arquivo {remote_file} e o arquivo {local_file}. Substituindo pelo Template Remoto")
                         replace_file(local_file, remote_content)
-                        print(f"Replaced {local_file} with content from {remote_file}.")
+                        print(f"Arquivo {local_file} atualizado com o conteúdo do Template Remoto {remote_file}.")
                         sys.exit(1)
                     else:
-                        print(f"{local_file} is already up to date with {remote_file}.")
+                        print(f"{local_file} já está atualizado com o conteúdo do Template Remoto {remote_file}.")
 
 def replace_file(local_file, remote_content):
     with open(local_file, 'w') as lf:
