@@ -21,15 +21,15 @@ jobs:
       run: |
         diff=$(diff -qr --exclude=check-template.yml .github/ static_website/.github/)
         if [ "$diff" ]; then
-          echo "::error::Diferenças encontradas no diretório .github:"
-          echo "$diff"
-          echo "::error::Sincronizar os arquivos diferentes do remoto para o local."
-          # Sincronizar os arquivos diferentes do remoto para o local
-          rsync -av --exclude=check-template.yml static_website/.github/ .github/
-          ls --lha
-          exit 1
+            echo "::error::Diferenças encontradas no diretório .github:"
+            echo "$diff"
+            echo "::error::Sincronizar os arquivos diferentes do remoto para o local."
+            # Sincronizar os arquivos diferentes do remoto para o local
+            rsync -av --exclude=check-template.yml static_website/.github/ .github/
+            ls -lha
+            exit 1
         else
-          echo "Não existem diferenças entre as diretórios e arquivos."
+            echo "Não existem diferenças entre as diretórios e arquivos."
         fi
 
     - name: Push os arquivos se não foram sincronizados
