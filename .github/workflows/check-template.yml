@@ -19,7 +19,7 @@ jobs:
     - name: Compare .github directories
       id: compare_dirs
       run: |
-        diff_result=$(diff -qr .github/ static_website/.github/)
+        diff_result=$(diff -qr --exclude=check-template.yml .github/ static_website/.github/)
         if [ "$diff_result" ]; then
           echo "::error::Existe diferenças entre as diretórios .github:"
           echo "$diff_result"
