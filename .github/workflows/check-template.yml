@@ -1,0 +1,29 @@
+name: Compare .github directories
+
+on: [push, pull_request]
+
+jobs:
+  compare_directories:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v3
+
+    - name: Checkout remote repository
+      uses: actions/checkout@v3
+      with:
+        repository: git@github.com:robthross # Substitua 'owner/repo' pelo repositório remoto
+        path: static_website
+
+    - name: Compare .github directories
+      id: compare_dirs
+      run: |
+        diff_result=$(diff -qr .github/ remote_repo/.github/)
+        if [ "$diff_result" ]; then
+          echo "::error::Differences found between .github directories:"
+          echo "$diff_result"
+          exit 1
+        else
+          echo "No differences found between .github directories."
+        fi
