@@ -23,7 +23,7 @@ jobs:
 
     - name: Run Python comparison and sync script
       run: |
-        python .github/scripts/compare_and_sync_github_dirs.py
+        python .github/scripts/compare_and_sync.py
 
     - name: Push changes if any files were synced
       if: ${{ failure() }}
