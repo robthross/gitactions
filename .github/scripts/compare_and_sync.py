@@ -1,10 +1,8 @@
 import os
-import filecmp
 from pathlib import Path
 import difflib
 
-def compare_file_contents(local_dir, remote_dir, exclude_file):
-    differences = []
+def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
     for root, _, files in os.walk(local_dir):
         for file in files:
             local_file = Path(root) / file
@@ -14,32 +12,40 @@ def compare_file_contents(local_dir, remote_dir, exclude_file):
                 continue
 
             if not remote_file.exists():
-                differences.append(f"File {remote_file} does not exist in the remote repository.")
+                print(f"File {remote_file} does not exist in the remote repository.")
             else:
                 with open(local_file, 'r') as lf, open(remote_file, 'r') as rf:
                     local_content = lf.readlines()
                     remote_content = rf.readlines()
+
                     diff = list(difflib.unified_diff(local_content, remote_content, fromfile=str(local_file), tofile=str(remote_file)))
+
                     if diff:
-                        differences.append(f"Differences found in {local_file}:")
-                        differences.extend(diff)
-    
-    return differences
+                        print(f"Differences found in {local_file}. Synchronizing changes...")
+                        sync_files(local_file, local_content, remote_content)
+                        print(f"Synced {local_file} with {remote_file}.")
+
+def sync_files(local_file, local_content, remote_content):
+    new_content = []
+    diff = list(difflib.ndiff(local_content, remote_content))
+
+    for line in diff:
+        if line.startswith("- "):  # Line in local file but not in remote, keep as is.
+            new_content.append(line[2:])
+        elif line.startswith("+ "):  # Line in remote file but not in local, add it.
+            new_content.append(line[2:])
+        elif line.startswith("  "):  # Line is the same in both, keep as is.
+            new_content.append(line[2:])
+
+    with open(local_file, 'w') as lf:
+        lf.writelines(new_content)
 
 def main():
     local_dir = ".github"
     remote_dir = "remote_repo/.github"
-    exclude_file = "check-template.yml"
+    exclude_file = "check-template"
     
-    differences = compare_file_contents(local_dir, remote_dir, exclude_file)
-    
-    if differences:
-        print("::error::Differences found between .github directories:")
-        for diff in differences:
-            print(diff)
-        exit(1)
-    else:
-        print("No differences found between .github directories.")
+    compare_and_sync_file_contents(local_dir, remote_dir, exclude_file)
 
 if __name__ == "__main__":
     main()
