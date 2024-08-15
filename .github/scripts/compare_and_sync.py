@@ -24,11 +24,10 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
                         print(f"Differences found in {local_file}. Synchronizing changes...")
                         sync_files(local_file, local_content, remote_content)
                         print(f"Synced {local_file} with {remote_file}.")
-                        diferences = True
+                        sys.exit(1)
                     else:
                         print(f"{local_file} is already up to date with {remote_file}.")
-    if diferences:
-        sys.exit(1)
+        
 def sync_files(local_file, local_content, remote_content):
     new_content = []
     diff = list(difflib.ndiff(local_content, remote_content))
