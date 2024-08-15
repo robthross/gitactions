@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
 import difflib
-import sys      
+import sys
+
 def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
     for root, _, files in os.walk(local_dir):
         for file in files:
@@ -27,18 +28,25 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
                         sys.exit(1)
                     else:
                         print(f"{local_file} is already up to date with {remote_file}.")
-        
+
 def sync_files(local_file, local_content, remote_content):
     new_content = []
-    diff = list(difflib.ndiff(local_content, remote_content))
+    remote_lines = {line.strip(): line for line in remote_content}
 
-    for line in diff:
-        if line.startswith("- "):  # Line in local file but not in remote, keep as is.
-            new_content.append(line[2:])
-        elif line.startswith("+ "):  # Line in remote file but not in local, add it.
-            new_content.append(line[2:])
-        elif line.startswith("  "):  # Line is the same in both, keep as is.
-            new_content.append(line[2:])
+    for line in local_content:
+        stripped_line = line.strip()
+        if stripped_line in remote_lines:
+            # Substitui a linha local pela linha correspondente do arquivo remoto mantendo a indentação
+            indent = len(line) - len(line.lstrip())
+            new_content.append(" " * indent + remote_lines[stripped_line])
+        else:
+            new_content.append(line)
+
+    # Adiciona quaisquer linhas remotas que não estão presentes no arquivo local
+    for line in remote_content:
+        stripped_line = line.strip()
+        if stripped_line not in [l.strip() for l in local_content]:
+            new_content.append(line)
 
     with open(local_file, 'w') as lf:
         lf.writelines(new_content)
