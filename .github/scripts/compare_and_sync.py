@@ -7,12 +7,12 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve
     for root, _, files in os.walk(local_dir):
         for file in files:
             local_file = Path(root) / file
-            remote_file = Path(remote_dir) / local_file.relative_to(remote_dir)
+            remote_file = Path(remote_dir) / local_file.relative_to(local_dir)
 
             if local_file.name in exclude_file:
                 continue
 
-            if not remote_file.exists():
+            if not local_file.exists():
                 print(f"File {remote_file} does not exist in the remote repository. Copying to local repository.")
                 copy_file(local_file, remote_file)
             else:
