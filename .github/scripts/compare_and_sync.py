@@ -11,7 +11,7 @@ def compare_directories(local_dir, remote_dir, exclude_file, exclude_file2):
             local_file = Path(root) / file
             remote_file = Path(remote_dir) / local_file.relative_to(local_dir)
             
-            if local_file.name == exclude_file or exclude_file2:
+            if local_file.name == exclude_file and exclude_file2:
                 continue
             
             if not local_file.exists():
@@ -30,7 +30,7 @@ def compare_directories(local_dir, remote_dir, exclude_file, exclude_file2):
 def sync_directories(local_dir, remote_dir, exclude_file, exclude_file2):
     for root, _, files in os.walk(remote_dir):
         for file in files:
-            if file == exclude_file or exclude_file2:
+            if file == exclude_file and exclude_file2:
                 continue
             remote_file = Path(root) / file
             local_file = Path(local_dir) / remote_file.relative_to(remote_dir)
@@ -42,7 +42,7 @@ def main():
     local_dir = ".github"
     remote_dir = "remote_repo/.github"
     exclude_file = "check-template"
-    exclude_file2 = "compare_and_sync.py"
+    exclude_file2 = "scripts/compare_and_sync.py"
     
     differences = compare_directories(local_dir, remote_dir, exclude_file, exclude_file2)
     
