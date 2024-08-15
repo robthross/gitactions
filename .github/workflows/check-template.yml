@@ -26,8 +26,8 @@ jobs:
         python .github/scripts/compare_and_sync.py
 
     - name: Push changes if any files were synced
-      if: ${{ failure() }}
       run: |
+        rm -rf remote_repo/
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
