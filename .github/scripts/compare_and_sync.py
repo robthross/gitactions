@@ -2,7 +2,6 @@ import os
 from pathlib import Path
 import difflib
 import sys      
-
 def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
     for root, _, files in os.walk(local_dir):
         for file in files:
