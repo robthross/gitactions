@@ -13,7 +13,7 @@ jobs:
     - name: Checkout remote repository
       uses: actions/checkout@v4
       with:
-        repository: robthross/static_website # Substitua 'owner/repo' pelo repositório remoto
+        repository: robthross/static_website
         path: remote_repo
 
     - name: Set up Python
