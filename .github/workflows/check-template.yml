@@ -19,10 +19,10 @@ jobs:
     - name: Compare os arquivos local com o Template
       id: compare_dirs
       run: |
-        diff=$(diff -qr --exclude=check-template.yml .github/ static_website/.github/)
-        if [ "$diff" ]; then
+        DIFF=$(diff -qr --exclude=check-template.yml .github/ static_website/.github/)
+        if [ "$DIFF" ]; then
             echo "::error::Diferenças encontradas no diretório .github:"
-            echo "$diff"
+            echo "$DIFF"
             echo "::error::Sincronizar os arquivos diferentes do remoto para o local."
             # Sincronizar os arquivos diferentes do remoto para o local
             rsync -av --exclude=check-template.yml static_website/.github/ .github/
