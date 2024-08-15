@@ -7,7 +7,7 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve
     for root, _, files in os.walk(local_dir):
         for file in files:
             local_file = Path(root) / file
-            remote_file = Path(remote_dir) / remote_file.relative_to(local_dir)
+            remote_file = Path(remote_dir) / local_file.relative_to(remote_dir)
 
             if local_file.name in exclude_file:
                 continue
