@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import difflib
+import sys      
 
 def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
     for root, _, files in os.walk(local_dir):
@@ -21,15 +22,14 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
                     diff = list(difflib.unified_diff(local_content, remote_content, fromfile=str(local_file), tofile=str(remote_file)))
 
                     if diff:
-                        try:
-                            print(f"Differences found in {local_file}. Synchronizing changes...")
-                            sync_files(local_file, local_content, remote_content)
-                            print(f"Synced {local_file} with {remote_file}.")
-                            raise Exception("Synced successfully.") 
-                        except Exception as e:
-                            print(f"Error syncing {local_file} with {remote_file}: {e}")
-                            return
-
+                        print(f"Differences found in {local_file}. Synchronizing changes...")
+                        sync_files(local_file, local_content, remote_content)
+                        print(f"Synced {local_file} with {remote_file}.")
+                        diferences = True
+                    else:
+                        print(f"{local_file} is already up to date with {remote_file}.")
+    if diferences:
+        sys.exit(1)
 def sync_files(local_file, local_content, remote_content):
     new_content = []
     diff = list(difflib.ndiff(local_content, remote_content))
