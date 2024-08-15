@@ -14,15 +14,16 @@ def compare_directories(local_dir, remote_dir, exclude_file, exclude_file2):
             if local_file.name == exclude_file or exclude_file2:
                 continue
             
-            if not remote_file.exists():
-                differences.append(f"File {remote_file} does not exist in the remote repository.")
+            if not local_file.exists():
+                differences.append(f"File {local_file} does not exist in the local repository.")
+                # differences.append(f"File {remote_file} does not exist in the remote repository.")
             else:
                 with open(local_file) as lf, open(remote_file) as rf:
                     local_content = lf.readlines()
                     remote_content = rf.readlines()
                     diff = list(difflib.unified_diff(local_content, remote_content, fromfile=str(local_file), tofile=str(remote_file)))
                     if diff:
-                        differences.append(f"Differences found in {local_file}:")
+                        differences.append(f"Differences found in {remote_file}:")
                         differences.extend(diff)
     return differences
 
