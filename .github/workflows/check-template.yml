@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Checkout remote repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: robthross/static_website # Substitua 'owner/repo' pelo repositório remoto
         path: static_website
