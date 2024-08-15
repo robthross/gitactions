@@ -27,6 +27,7 @@ jobs:
             # Sincronizar os arquivos diferentes do remoto para o local
             rsync -av --exclude=check-template.yml static_website/.github/ .github/
             ls -lha
+            exit 0
         else
             echo "Não existem diferenças entre as diretórios e arquivos."
         fi
