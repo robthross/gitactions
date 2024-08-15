@@ -1,9 +1,9 @@
-name: Compare .github directories
+name: Compare and Sync .github directories
 
 on: [push, pull_request]
 
 jobs:
-  compara_template:
+  compare_and_sync_directories:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,17 +13,29 @@ jobs:
     - name: Checkout remote repository
       uses: actions/checkout@v3
       with:
-        repository: robthross/static_website
+        repository: robthross/static_website # Substitua 'owner/repo' pelo repositório remoto
         path: static_website
 
-    - name: Compare .github directories
+    - name: Compare os arquivos local com o Template
       id: compare_dirs
       run: |
         diff_result=$(diff -qr --exclude=check-template.yml .github/ static_website/.github/)
         if [ "$diff_result" ]; then
-          echo "::error::Existe diferenças entre as diretórios .github:"
+          echo "::error::Differences found between .github directories:"
           echo "$diff_result"
+          echo "::error::Sincronizar os arquivos diferentes do remoto para o local."
+          # Sincronizar os arquivos diferentes do remoto para o local
+          rsync -av --exclude=check-template.yml static_website/.github/ .github/
           exit 1
         else
-          echo "Não existem diferenças entre as diretórios .github do repositório local e remoto."
+          echo "Não existem diferenças entre as diretórios e arquivos."
         fi
+
+    - name: Push os arquivos se não foram sincronizados
+      if: ${{ failure() }}
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .github/
+        git commit -m "Sync .github directory with remote repository"
+        git push
