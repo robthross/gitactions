@@ -21,9 +21,9 @@ jobs:
       run: |
         diff_result=$(diff -qr .github/ static_website/.github/)
         if [ "$diff_result" ]; then
-          echo "::error::Differences found between .github directories:"
+          echo "::error::Existe diferenças entre as diretórios .github:"
           echo "$diff_result"
           exit 1
         else
-          echo "No differences found between .github directories."
+          echo "Não existem diferenças entre as diretórios .github do repositório local e remoto."
         fi
