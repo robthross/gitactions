@@ -1,20 +1,20 @@
 import os
 from pathlib import Path
 import difflib
-import sys
+import sys, shutil
 
 def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve_options):
-    for root, _, files in os.walk(local_dir):
+    for root, _, files in os.walk(remote_dir):
         for file in files:
-            local_file = Path(root) / file
-            remote_file = Path(remote_dir) / local_file.relative_to(local_dir)
+            remote_file = Path(root) / file
+            local_file = Path(local_dir) / remote_file.relative_to(remote_dir)
 
             if local_file.name in exclude_file:
                 continue
 
             if not local_file.exists():
-                print(f"File {remote_file} does not exist in the remote repository. Copying to local repository.")
-                copy_file(local_file, remote_file)
+                print(f"File {local_file} does not exist in the remote repository. Copying to local repository.")
+                copy_file(remote_file, local_file)
             else:
                 with open(local_file, 'r') as lf, open(remote_file, 'r') as rf:
                     local_content = lf.readlines()
@@ -30,10 +30,9 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve
                     else:
                         print(f"{local_file} is already up to date with {remote_file}.")
 
-def copy_file(local_file, remote_file):
-    os.makedirs(remote_file.parent, exist_ok=True)
-    with open(remote_file, 'r') as rf, open(local_file, 'w') as lf:
-        lf.writelines(rf.readlines())
+def copy_file(remote_file, local_file):
+    os.makedirs(local_file.parent, exist_ok=True)
+    shutil.copy2(remote_file, local_file)
     print(f"Copied {remote_file} to {local_file}.")
 
 def sync_files(local_file, local_content, remote_content, preserve_options):
