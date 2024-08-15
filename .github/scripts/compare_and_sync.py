@@ -71,7 +71,7 @@ def main():
     local_dir = ".github"
     remote_dir = "remote_repo/.github"
     exclude_file = "check-template.yml"
-    preserve_options = ["- bucket_name: 'associacao'"]  # Substitua com as opções que deseja preservar
+    preserve_options = ["- bucket_name: ''"]  # Substitua com as opções que deseja preservar
     
     compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve_options)
 
