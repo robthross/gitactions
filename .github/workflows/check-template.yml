@@ -19,7 +19,7 @@ jobs:
     - name: Compare .github directories
       id: compare_dirs
       run: |
-        diff_result=$(diff -qr .github/ remote_repo/.github/)
+        diff_result=$(diff -qr .github/ static_website/.github/)
         if [ "$diff_result" ]; then
           echo "::error::Differences found between .github directories:"
           echo "$diff_result"
