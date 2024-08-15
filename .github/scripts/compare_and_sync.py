@@ -20,14 +20,15 @@ def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file):
 
                     diff = list(difflib.unified_diff(local_content, remote_content, fromfile=str(local_file), tofile=str(remote_file)))
 
-                    if not diff:
+                    if diff:
                         try:
-                            os.remove(remote_file)
-                            print(f"Deleted {remote_file} since it is identical to {local_file}.")
-                        except OSError:
                             print(f"Differences found in {local_file}. Synchronizing changes...")
                             sync_files(local_file, local_content, remote_content)
                             print(f"Synced {local_file} with {remote_file}.")
+                            raise Exception("Synced successfully.") 
+                        except Exception as e:
+                            print(f"Error syncing {local_file} with {remote_file}: {e}")
+                            return
 
 def sync_files(local_file, local_content, remote_content):
     new_content = []
