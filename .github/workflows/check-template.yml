@@ -3,7 +3,7 @@ name: Compare .github directories
 on: [push, pull_request]
 
 jobs:
-  compare_directories:
+  compara_template:
     runs-on: ubuntu-latest
 
     steps:
