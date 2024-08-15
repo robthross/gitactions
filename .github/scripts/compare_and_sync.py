@@ -48,7 +48,7 @@ def sync_files(local_file, local_content, remote_content):
 def main():
     local_dir = ".github"
     remote_dir = "remote_repo/.github"
-    exclude_file = "check-template"
+    exclude_file = "check-template.yml"
     
     compare_and_sync_file_contents(local_dir, remote_dir, exclude_file)
 
