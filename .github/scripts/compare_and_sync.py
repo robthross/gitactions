@@ -26,10 +26,10 @@ def compare_directories(local_dir, remote_dir, exclude_file, exclude_file2):
                         differences.extend(diff)
     return differences
 
-def sync_directories(local_dir, remote_dir, exclude_file):
+def sync_directories(local_dir, remote_dir, exclude_file, exclude_file2):
     for root, _, files in os.walk(remote_dir):
         for file in files:
-            if file == exclude_file:
+            if file == exclude_file or exclude_file2:
                 continue
             remote_file = Path(root) / file
             local_file = Path(local_dir) / remote_file.relative_to(remote_dir)
@@ -43,7 +43,7 @@ def main():
     exclude_file = "check-template.yml"
     exclude_file2 = "scripts/compare_and_sync.py"
     
-    differences = compare_directories(local_dir, remote_dir, exclude_file)
+    differences = compare_directories(local_dir, remote_dir, exclude_file, exclude_file2)
     
     if differences:
         print("::error::Differences found between .github directories:")
