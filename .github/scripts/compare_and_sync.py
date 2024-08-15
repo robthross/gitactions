@@ -1,9 +1,9 @@
 import os
 from pathlib import Path
-import sys
 import difflib
+import sys
 
-def compare_and_replace_file_contents(local_dir, remote_dir, exclude_file):
+def compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve_options):
     for root, _, files in os.walk(local_dir):
         for file in files:
             local_file = Path(root) / file
@@ -13,7 +13,8 @@ def compare_and_replace_file_contents(local_dir, remote_dir, exclude_file):
                 continue
 
             if not remote_file.exists():
-                print(f"O Arquivo {remote_file} não existe no repositório remoto. Não será feita a comparação.")
+                print(f"File {remote_file} does not exist in the remote repository. Copying to local repository.")
+                copy_file(local_file, remote_file)
             else:
                 with open(local_file, 'r') as lf, open(remote_file, 'r') as rf:
                     local_content = lf.readlines()
@@ -22,23 +23,58 @@ def compare_and_replace_file_contents(local_dir, remote_dir, exclude_file):
                     diff = list(difflib.unified_diff(local_content, remote_content, fromfile=str(local_file), tofile=str(remote_file)))
 
                     if diff:
-                        print(f"Existe diferença entre o conteúdo do arquivo {remote_file} e o arquivo {local_file}. Substituindo pelo Template Remoto")
-                        replace_file(local_file, remote_content)
-                        print(f"Arquivo {local_file} atualizado com o conteúdo do Template Remoto {remote_file}.")
+                        print(f"Differences found in {local_file}. Synchronizing changes while preserving options...")
+                        sync_files(local_file, local_content, remote_content, preserve_options)
+                        print(f"Synced {local_file} with {remote_file}.")
                         sys.exit(1)
                     else:
-                        print(f"{local_file} já está atualizado com o conteúdo do Template Remoto {remote_file}.")
+                        print(f"{local_file} is already up to date with {remote_file}.")
 
-def replace_file(local_file, remote_content):
+def copy_file(local_file, remote_file):
+    os.makedirs(local_file.parent, exist_ok=True)
+    with open(remote_file, 'r') as rf, open(local_file, 'w') as lf:
+        lf.writelines(rf.readlines())
+    print(f"Copied {remote_file} to {local_file}.")
+
+def sync_files(local_file, local_content, remote_content, preserve_options):
+    new_content = []
+    preserve_dict = {}
+
+    # Armazena as opções a serem preservadas
+    for line in local_content:
+        for option in preserve_options:
+            if option in line:
+                preserve_dict[option] = line
+
+    # Substitui o conteúdo do arquivo local pelo conteúdo do arquivo remoto
+    for line in remote_content:
+        option_found = False
+        for option in preserve_options:
+            if option in line:
+                if option in preserve_dict:
+                    new_content.append(preserve_dict[option])  # Mantém a opção preservada
+                else:
+                    new_content.append(line)  # Adiciona a linha do remoto se não estiver no local
+                option_found = True
+                break
+        if not option_found:
+            new_content.append(line)
+
+    # Garante que as opções preservadas que não estão no remoto sejam adicionadas
+    for option, line in preserve_dict.items():
+        if option not in ''.join(remote_content):
+            new_content.append(line)
+
     with open(local_file, 'w') as lf:
-        lf.writelines(remote_content)
+        lf.writelines(new_content)
 
 def main():
     local_dir = ".github"
     remote_dir = "remote_repo/.github"
     exclude_file = "check-template.yml"
+    preserve_options = ['associacao']  # Substitua com as opções que deseja preservar
     
-    compare_and_replace_file_contents(local_dir, remote_dir, exclude_file)
+    compare_and_sync_file_contents(local_dir, remote_dir, exclude_file, preserve_options)
 
 if __name__ == "__main__":
     main()
