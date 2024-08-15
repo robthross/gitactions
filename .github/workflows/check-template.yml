@@ -11,9 +11,9 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Checkout remote repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        repository: owner/repo # Substitua 'owner/repo' pelo repositório remoto
+        repository: robthross/static_website # Substitua 'owner/repo' pelo repositório remoto
         path: remote_repo
 
     - name: Set up Python
@@ -23,7 +23,7 @@ jobs:
 
     - name: Run Python comparison and sync script
       run: |
-        python .github/scripts/compare_and_sync.py
+        python .github/scripts/compare_and_sync_github_dirs.py
 
     - name: Push changes if any files were synced
       if: ${{ failure() }}
