@@ -9,8 +9,8 @@ jobs:
     steps:
     - name: Checkout the repository
       uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.WORKFLOW_TOKEN }}
+    #   with:
+        # token: ${{ secrets.WORKFLOW_TOKEN }}
 
     - name: Checkout remote repository
       uses: actions/checkout@v4
