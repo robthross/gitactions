@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - bucket_name: 'portal'
-      - bucket-key: 'global'
+      - bucket_name: ''
+      - bucket-key: ''
