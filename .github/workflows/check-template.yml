@@ -7,12 +7,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the repository
+    - name: Checkout repositório
       uses: actions/checkout@v3
       with:
         token: ${{ secrets.WORKFLOW_TOKEN }}
 
-    - name: Checkout remote repository
+    - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
         ref: main
@@ -24,18 +24,17 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Run Python comparison and sync script
+    - name: Rodando Script de Comparação e Sincronia
       run: |
         python .github/scripts/compare_and_sync.py
 
-    - name: Push changes if any files were synced
+    - name: Faz o push caso apresente falha
       if: ${{ failure() }}
       run: |
-        rm -rf remote_repo
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
-        git commit -m "Sync .github directory with remote repository"
+        git commit -m "Sync .github com o diretório remoto"
         git push
 
 
