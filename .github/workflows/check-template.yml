@@ -1,13 +1,13 @@
-name: Compare .github directories
+name: Compara Templates
 
 on: [push, pull_request]
 
 jobs:
-  compare_directories:
+  compara_diretorios:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repositório
+    - name: Checkout repositório atual
       uses: actions/checkout@v3
       with:
         ref: ${{ github.head_ref }}
@@ -20,17 +20,19 @@ jobs:
         path: remote_repo
         ref: main
 
-    - name: Set up Python
+    - name: Configura Ambiente Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: 3.x
 
     - name: Rodando Script de Comparação e Sincronia
       run: |
         python .github/scripts/compare_and_sync.py
 
+    - name: Configura workflow
+      run: sh .github/scripts/set_up_workflow.py
+
     - name: Faz o push caso apresente falha
-      if: ${{ failure() }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"

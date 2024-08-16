@@ -1,4 +1,5 @@
 from ruamel.yaml import YAML
+from ruamel.yaml.scalarstring import DoubleQuotedScalarString
 from pathlib import Path
 
 def load_yaml(file_path):
@@ -17,7 +18,7 @@ def replace_parameters_in_yaml(file_path, replacements):
         if isinstance(obj, dict):
             for key, value in obj.items():
                 if key in replacements:
-                    obj[key] = replacements[key]
+                    obj[key] = DoubleQuotedScalarString(replacements[key])
                 elif isinstance(value, (dict, list)):
                     recursive_replace(value, replacements)
         elif isinstance(obj, list):
@@ -31,8 +32,8 @@ def replace_parameters_in_yaml(file_path, replacements):
 def main():
     workflows_dir = Path(".github/workflows")
     replacements = {
-        'bucket_name': 'portal',
-        'bucket-key': 'recheio'
+        'bucket-name': "portal",
+        'bucket-key': "portal"
     }
 
     for yaml_file in workflows_dir.glob("*.yml"):
