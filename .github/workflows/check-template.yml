@@ -38,15 +38,9 @@ jobs:
         git commit -m "Sync .github com o diretório remoto"
         git push
 
+    - name: Install dependencies
+      run: pip install ruamel.yaml
 
-    # - name: Setup Python
-    #   uses: actions/setup-python@v4
-    #   with:
-    #     python-version: '3.x'
-
-    # - name: Install dependencies
-    #   run: pip install ruamel.yaml
-
-    # - name: Compare and sync YAML files
-    #   run: python .github/scripts/compare_and_sync.py
+    - name: Configura workflow
+      run: python .github/scripts/set_up_workflow.py
 
