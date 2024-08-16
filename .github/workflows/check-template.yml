@@ -25,6 +25,9 @@ jobs:
       with:
         python-version: 3.x
 
+    - name: Install dependencies
+      run: pip install ruamel.yaml
+
     - name: Rodando Script de Comparação e Sincronia
       run: |
         python .github/scripts/compare_and_sync.py
@@ -41,10 +44,3 @@ jobs:
         git add .github/
         git commit -m "Sync .github com o diretório remoto"
         git push
-
-    - name: Install dependencies
-      run: pip install ruamel.yaml
-
-    - name: Configura workflow
-      run: python .github/scripts/set_up_workflow.py
-
