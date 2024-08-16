@@ -30,6 +30,7 @@ jobs:
         python .github/scripts/compare_and_sync.py
 
     - name: Configura workflow
+      if: ${{ failure() }}
       run: sh .github/scripts/set_up_workflow.py
 
     - name: Faz o push caso apresente falha
