@@ -18,6 +18,7 @@ def compare_yaml(local_file, remote_file, fixed_keys):
 
     # Preserve fixed keys in local data
     for key in fixed_keys:
+        print(key)
         if key in local_data and key.startswith("bucket"):
             remote_data[key] = local_data[key]
 
