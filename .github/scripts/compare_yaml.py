@@ -8,9 +8,9 @@ def load_yaml(file_path):
     with open(file_path, 'r') as stream:
         return yaml.load(stream), yaml
 
-def save_yaml(data, file_path, yaml):
-    with open(file_path, 'w') as stream:
-        yaml.dump(data, stream)
+# def save_yaml(data, file_path, yaml):
+#     with open(file_path, 'w') as stream:
+#         yaml.dump(data, stream)
 
 def compare_yaml(local_file, remote_file, fixed_keys):
     local_data, _ = load_yaml(local_file)
@@ -23,9 +23,9 @@ def compare_yaml(local_file, remote_file, fixed_keys):
 
     return local_data != remote_data
 
-def sync_file(local_file, remote_file, yaml):
-    remote_data, _ = load_yaml(remote_file)
-    save_yaml(remote_data, local_file, yaml)
+# def sync_file(local_file, remote_file, yaml):
+#     remote_data, _ = load_yaml(remote_file)
+#     save_yaml(remote_data, local_file, yaml)
 
 def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
     yaml = YAML()
@@ -45,7 +45,8 @@ def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
         else:
             if compare_yaml(local_file, remote_file, fixed_keys):
                 print(f"Differences found in {relative_path}. Syncing changes.")
-                sync_file(local_file, remote_file, yaml)
+                # sync_file(local_file, remote_file, yaml)
+                shutil.copy2(remote_file, local_file)
                 files_changed = True
 
     if files_changed:

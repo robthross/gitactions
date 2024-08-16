@@ -30,7 +30,7 @@ jobs:
 
     - name: Rodando Script de Comparação e Sincronia
       run: |
-        python .github/scripts/compare_and_sync.py
+        python .github/scripts/compare_yaml.py
 
     - name: Configura workflow
       if: ${{ failure() }}
