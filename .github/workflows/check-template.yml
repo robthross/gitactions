@@ -15,8 +15,10 @@ jobs:
     - name: Checkout remote repository
       uses: actions/checkout@v4
       with:
-        repository: robthross/static_website
+        repository: robthross/static_website@main
+        token: ${{ secrets.WORKFLOW_TOKEN }}
         path: remote_repo
+        
 
     - name: Set up Python
       uses: actions/setup-python@v4
