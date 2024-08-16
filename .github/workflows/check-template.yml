@@ -31,7 +31,8 @@ jobs:
 
     - name: Configura workflow
       if: ${{ failure() }}
-      run: sh .github/scripts/set_up_workflow.py
+      run: |
+        python .github/scripts/set_up_workflow.py
 
     - name: Faz o push caso apresente falha
       run: |
