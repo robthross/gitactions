@@ -33,7 +33,8 @@ def main():
     workflows_dir = Path(".github/workflows")
     replacements = {
         'bucket-name': "portal",
-        'bucket-key': "portal"
+        'bucket-key': "portal",
+        'node-verson': "16"
     }
 
     for yaml_file in workflows_dir.glob("*.yml"):
