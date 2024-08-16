@@ -15,6 +15,7 @@ jobs:
     - name: Checkout remote repository
       uses: actions/checkout@v4
       with:
+        ref: main
         repository: robthross/static_website@main
         path: remote_repo
 
