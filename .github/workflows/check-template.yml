@@ -40,6 +40,7 @@ jobs:
     - name: Faz o push caso apresente falha
       if: ${{ failure() }}
       run: |
+        rm -rf remote_repo/
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
