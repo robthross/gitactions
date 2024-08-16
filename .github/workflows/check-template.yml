@@ -38,6 +38,7 @@ jobs:
         python .github/scripts/set_up_workflow.py
 
     - name: Faz o push caso apresente falha
+      if: ${{ success() }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
