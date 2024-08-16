@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: main
-        repository: robthross/static_website@main
+        repository: robthross/static_website
         path: remote_repo
 
     - name: Set up Python
