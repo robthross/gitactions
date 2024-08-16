@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+    - main
+    - develop
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - bucket_name: ''
+    - bucket_key: ''
+    - legacy-peer-deps: true

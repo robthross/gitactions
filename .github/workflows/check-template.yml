@@ -1,9 +1,9 @@
-name: Compare and Sync .github directories
+name: Compare .github directories
 
 on: [push, pull_request]
 
 jobs:
-  compare_and_sync_directories:
+  compare_directories:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,4 +36,16 @@ jobs:
         git add .github/
         git commit -m "Sync .github directory with remote repository"
         git push
+
+
+    # - name: Setup Python
+    #   uses: actions/setup-python@v4
+    #   with:
+    #     python-version: '3.x'
+
+    # - name: Install dependencies
+    #   run: pip install ruamel.yaml
+
+    # - name: Compare and sync YAML files
+    #   run: python .github/scripts/compare_and_sync.py
 
