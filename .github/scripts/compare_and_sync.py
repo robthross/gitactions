@@ -34,6 +34,7 @@ def copy_file(remote_file, local_file):
     os.makedirs(local_file.parent, exist_ok=True)
     shutil.copy2(remote_file, local_file)
     print(f"Copied {remote_file} to {local_file}.")
+    sys.exit(1)
 
 def sync_files(local_file, local_content, remote_content, preserve_options):
     new_content = []
