@@ -45,7 +45,6 @@ def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
         else:
             if compare_yaml(local_file, remote_file, fixed_keys):
                 print(f"Differences found in {relative_path}. Syncing changes.")
-                # sync_file(local_file, remote_file, yaml)
                 shutil.copy2(remote_file, local_file)
                 files_changed = True
 
