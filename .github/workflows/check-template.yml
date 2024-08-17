@@ -1,6 +1,6 @@
 name: Compara Templates
 
-on: 
+on:
   create:
 
 jobs:
