@@ -1,0 +1,6 @@
+on:
+    pull_request:
+        ["closed", "syncronized", "opened"]
+            branches:
+            - main
+  
