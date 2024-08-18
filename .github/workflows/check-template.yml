@@ -44,6 +44,7 @@ jobs:
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
         git diff --exit-code || echo "Não Ocorreu mudanças no Template"
+        git diff --exit-code > diff.txt
         echo "::set-output name=Existe mudanças::$(if [ -s diff.txt ]; then echo true; else echo false; fi)"
         rm diff.txt
 
