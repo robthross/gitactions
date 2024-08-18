@@ -43,5 +43,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
-        git commit -m "Sync .github com o diretório remoto"
+        git commit -m "Sync .github com o diretório remoto [skip ci]"
         git push
