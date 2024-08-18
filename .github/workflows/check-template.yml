@@ -45,12 +45,12 @@ jobs:
         git config --global user.email "action@github.com"
         git diff --exit-code || echo "Não Ocorreu mudanças no Template"
         git diff --exit-code > diff.txt
-        echo "::set-output name=Existe mudanças::$(if [ -s diff.txt ]; then echo true; else echo false; fi)"
+        echo "::set-output name=Existe_mudancas::$(if [ -s diff.txt ]; then echo true; else echo false; fi)"
         rm diff.txt
 
 
     - name: Faz o push caso apresente falha
-      if: ${{ steps.git_diff.outcome != 'true'}}
+      if: ${{ steps.git_diff.outputs.Existe_mudancas != 'true'}}
       run: |
         rm -rf remote_repo/
         git config user.name "GitHub Actions"
@@ -60,5 +60,5 @@ jobs:
         git push
 
     - name: Continuando com pipeline
-      if: ${{steps.git_diff.outcome == 'false'}}
+      if: ${{steps.git_diff.outputs.Existe_mudancas == 'false'}}
       run: echo "Nenhuma mudança foi detectado no Template"
