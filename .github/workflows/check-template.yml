@@ -37,7 +37,17 @@ jobs:
       run: |
         python .github/scripts/set_up_workflow.py
 
+
+    - name: Check for changes
+      id: git_diff
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git diff --exit-code || echo "Não Ocorreu mudanças no Template"
+
+
     - name: Faz o push caso apresente falha
+      if: steps.git_diff.outcome == 'failure'
       run: |
         rm -rf remote_repo/
         git config user.name "GitHub Actions"
@@ -45,3 +55,7 @@ jobs:
         git add .github/
         git commit -m "Sync .github com o diretório remoto [skip ci]"
         git push
+
+    - name: Continuando com pipeline
+      if: steps.git_diff.outcome == 'success'
+      run: echo "Nenhuma mudança foi detectado no Template"
