@@ -57,5 +57,5 @@ jobs:
         git push
 
     - name: Continuando com pipeline
-      if: steps.git_diff.outcome == 'success'
+      if: steps.git_diff.outcome == null
       run: echo "Nenhuma mudança foi detectado no Template"
