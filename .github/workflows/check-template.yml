@@ -47,7 +47,7 @@ jobs:
 
 
     - name: Faz o push caso apresente falha
-      if: steps.git_diff.outcome != ''
+      if: ${{ steps.git_diff.outcome != ''}}
       run: |
         rm -rf remote_repo/
         git config user.name "GitHub Actions"
@@ -57,5 +57,5 @@ jobs:
         git push
 
     - name: Continuando com pipeline
-      if: steps.git_diff.outcome == null
+      if: ${{steps.git_diff.outcome == ''}}
       run: echo "Nenhuma mudança foi detectado no Template"
