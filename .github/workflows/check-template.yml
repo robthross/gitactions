@@ -1,7 +1,7 @@
 name: Compara Templates
 
 on: 
-  create:
+  push:
 
 jobs:
   compara_diretorios:
