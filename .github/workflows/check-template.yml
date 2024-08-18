@@ -47,7 +47,7 @@ jobs:
 
 
     - name: Faz o push caso apresente falha
-      if: steps.git_diff.outcome == 'failure'
+      if: steps.git_diff.outcome != ''
       run: |
         rm -rf remote_repo/
         git config user.name "GitHub Actions"
