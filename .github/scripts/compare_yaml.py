@@ -50,7 +50,6 @@ def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
 
     if files_changed:
         print("Differences were found and synchronized. Pipeline will be aborted.")
-        # sys.exit(1)
     else:
         print("No differences found. Pipeline will continue.")
 
