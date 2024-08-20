@@ -44,6 +44,10 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
-        git commit -m "Sync .github com o diretório remoto [skip ci]"
-        git push
+        if [[ $(git status --porcelain) ]]; then
+          git commit -m "Sync .github com o diretório remoto [skip ci]"
+          git push
+        else
+          echo "Sem mudanças para comitar"
+        fi
     continue-on-error: true
