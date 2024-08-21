@@ -1,7 +1,7 @@
 name: Compara Templates
 
 on:
-  push:
+  workflow_call:
 
 jobs:
   compara_diretorios:
