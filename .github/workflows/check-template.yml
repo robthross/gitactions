@@ -8,9 +8,11 @@ on:
         description: 'Ref do branch a ser comparado'
         type: string
         default: main
-    secrets:
       token: 
         required: true
+        description: 'Token para realizar o checkout dos repositórios'
+        type: string
+        default: ${{ secrets.WORKFLOW_TOKEN }}
 
 
 jobs:
