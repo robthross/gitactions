@@ -2,6 +2,16 @@ name: Compara Templates
 
 on:
   workflow_call:
+    inputs:
+      ref: 
+        required: true
+        description: 'Ref do branch a ser comparado'
+        type: string
+        default: main
+      token: 
+        required: true
+        description: 'Token para checkout dos repositórios'
+        type: string
 
 jobs:
   compara_diretorios:
