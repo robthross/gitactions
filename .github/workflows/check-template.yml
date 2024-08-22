@@ -8,9 +8,9 @@ on:
         description: 'Ref do branch a ser comparado'
         type: string
         default: main
-    # secrets:
-    #   token: 
-    #     required: true
+    secrets:
+      token: 
+        required: true
 
 
 jobs:
