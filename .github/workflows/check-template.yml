@@ -8,10 +8,10 @@ on:
         description: 'Ref do branch a ser comparado'
         type: string
         default: main
-      token: 
-        required: true
-        description: 'Token para checkout dos repositórios'
-        type: string
+    # secrets:
+    #   token: 
+    #     required: true
+
 
 jobs:
   compara_diretorios:
