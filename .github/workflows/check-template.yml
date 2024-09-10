@@ -44,7 +44,7 @@ jobs:
 
     - name: Faz o push caso apresente falha
       run: |
-        rm -rf remote_repo/
+        rm -rf remote_repo/ && rm -rf remote_actions/
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
