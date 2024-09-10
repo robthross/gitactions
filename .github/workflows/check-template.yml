@@ -14,6 +14,13 @@ jobs:
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
+        repository: robthross/gitactions
+        path: remote_actions
+        ref: main
+    
+    - name: Checkout repositório remoto
+      uses: actions/checkout@v4
+      with:
         repository: robthross/static_website
         path: remote_repo
         ref: main
@@ -28,11 +35,11 @@ jobs:
 
     - name: Rodando Script de Comparação e Sincronia
       run: |
-        python remote_repo/.github/scripts/compare_yaml.py
+        python remote_actions/.github/scripts/compare_yaml.py
 
     - name: Configura workflow
       run: |
-        python remote_repo/.github/scripts/set_up_workflow.py
+        python remote_actions/.github/scripts/set_up_workflow.py
 
 
     - name: Faz o push caso apresente falha
