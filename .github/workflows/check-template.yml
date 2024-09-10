@@ -2,18 +2,6 @@ name: Compara Templates
 
 on:
   workflow_call:
-    inputs:
-      ref: 
-        required: true
-        description: 'Ref do branch a ser comparado'
-        type: string
-        default: main
-      token: 
-        required: true
-        description: 'Token para realizar o checkout dos repositórios'
-        type: string
-        default: ${{ secrets.WORKFLOW_TOKEN }}
-
 
 jobs:
   compara_diretorios:
@@ -22,9 +10,6 @@ jobs:
     steps:
     - name: Checkout repositório atual
       uses: actions/checkout@v4
-      with:
-        ref: ${{ github.head_ref }}
-        token: ${{ secrets.WORKFLOW_TOKEN }}
 
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
