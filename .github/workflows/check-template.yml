@@ -16,7 +16,7 @@ jobs:
       with:
         repository: robthross/gitactions
         path: remote_actions
-        ref: main
+        ref: develop
     
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
