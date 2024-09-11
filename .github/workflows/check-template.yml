@@ -17,7 +17,8 @@ jobs:
     steps:
     - name: Checkout repositório atual
       uses: actions/checkout@v4
-      token: ${{ secrets.WORKFLOW_TOKEN }}
+      with:
+        token: ${{ secrets.WORKFLOW_TOKEN }}
 
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
