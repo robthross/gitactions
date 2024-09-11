@@ -2,6 +2,13 @@ name: Compara Templates
 
 on:
   workflow_call:
+      inputs:
+        token:
+          required: false
+          description: 'Token de acesso ao repositório remoto'
+          type: string
+          default: ''
+
 
 jobs:
   compara_diretorios:
