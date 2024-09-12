@@ -5,10 +5,15 @@ on:
     secrets:
       PAT_TOKEN:
         required: true
+    
+
+      
 
 jobs:
   compara_diretorios:
     runs-on: ubuntu-latest
+
+    permissions: write-all
 
     steps:
     - name: Checkout repositório atual
