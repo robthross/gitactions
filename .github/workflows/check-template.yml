@@ -2,52 +2,61 @@ name: Compara Templates
 
 on:
   workflow_call:
+    secrets:
+      PAT_TOKEN:
+        required: true
 
-runs:
-  - name: Checkout repositório atual
-    uses: actions/checkout@v4
+jobs:
+  compara_diretorios:
+    runs-on: ubuntu-latest
 
-  - name: Checkout repositório remoto
-    uses: actions/checkout@v4
-    with:
-      repository: robthross/gitactions
-      path: remote_actions
-      ref: develop
-  
-  - name: Checkout repositório remoto
-    uses: actions/checkout@v4
-    with:
-      repository: robthross/static_website
-      path: remote_repo
-      ref: main
+    steps:
+    - name: Checkout repositório atual
+      uses: actions/checkout@v4
 
-  - name: Configura Ambiente Python
-    uses: actions/setup-python@v4
-    with:
-      python-version: 3.x
+    - name: Checkout repositório remoto
+      uses: actions/checkout@v4
+      with:
+        repository: robthross/gitactions
+        path: remote_actions
+        ref: develop
+    
+    - name: Checkout repositório remoto
+      uses: actions/checkout@v4
+      with:
+        repository: robthross/static_website
+        path: remote_repo
+        ref: main
 
-  - name: Install dependencies
-    run: pip install ruamel.yaml
+    - name: Configura Ambiente Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
 
-  - name: Rodando Script de Comparação e Sincronia
-    run: |
-      python remote_actions/.github/scripts/compare_yaml.py
+    - name: Install dependencies
+      run: pip install ruamel.yaml
 
-  - name: Configura workflow
-    run: |
-      python remote_actions/.github/scripts/set_up_workflow.py
+    - name: Rodando Script de Comparação e Sincronia
+      run: |
+        python remote_actions/.github/scripts/compare_yaml.py
+
+    - name: Configura workflow
+      run: |
+        python remote_actions/.github/scripts/set_up_workflow.py
 
 
-  - name: Faz o push caso apresente falha
-    run: |
-      rm -rf remote_repo/ && rm -rf remote_actions/
-      git config user.name "GitHub Actions"
-      git config user.email "actions@github.com"
-      git add .github/
-      if [[ $(git status --porcelain) ]]; then
-        git commit -m "Sync .github com o diretório remoto [skip ci]"
-        git push
-      else
-        echo "Sem mudanças para comitar"
-      fi
-  continue-on-error: true
+    - name: Faz o push caso apresente falha
+      run: |
+        rm -rf remote_repo/ && rm -rf remote_actions/
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .github/
+        if [[ $(git status --porcelain) ]]; then
+          git commit -m "Sync .github com o diretório remoto [skip ci]"
+          git push
+        else
+          echo "Sem mudanças para comitar"
+        fi
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    continue-on-error: true
