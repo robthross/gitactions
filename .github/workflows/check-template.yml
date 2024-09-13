@@ -2,6 +2,12 @@ name: Compara Templates
 
 on:
   workflow_call:
+    secrets:
+      PAT_TOKEN:
+        required: true
+    
+
+      
 
 jobs:
   compara_diretorios:
@@ -10,13 +16,6 @@ jobs:
     permissions: write-all
 
     steps:
-    - name: Checkout repositório remoto
-      uses: actions/checkout@v4
-      with:
-        repository: robthross/static_website
-        path: remote_repo
-        ref: main
-    
     - name: Checkout repositório atual
       uses: actions/checkout@v4
       with:
@@ -27,8 +26,15 @@ jobs:
       with:
         repository: robthross/gitactions
         path: remote_actions
-        ref: develop  
+        ref: develop
     
+    - name: Checkout repositório remoto
+      uses: actions/checkout@v4
+      with:
+        repository: robthross/static_website
+        path: remote_repo
+        ref: main
+
     - name: Configura Ambiente Python
       uses: actions/setup-python@v4
       with:
