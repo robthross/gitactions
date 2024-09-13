@@ -16,22 +16,17 @@ jobs:
         repository: robthross/static_website
         path: remote_repo
         ref: main
-
-
+    
     - name: Checkout repositório atual
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
 
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
         repository: robthross/gitactions
         path: remote_actions
-        ref: develop
-
-
+        ref: develop  
+    
     - name: Configura Ambiente Python
       uses: actions/setup-python@v4
       with:
@@ -55,11 +50,10 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add .github/
-        git commit -m "Sync .github com o diretório remoto [skip ci]"
-
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+        if [[ $(git status --porcelain) ]]; then
+          git commit -m "Sync .github com o diretório remoto [skip ci]"
+          git push
+        else
+          echo "Sem mudanças para comitar"
+        fi
     continue-on-error: true
