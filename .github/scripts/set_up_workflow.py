@@ -30,7 +30,7 @@ def replace_parameters_in_yaml(file_path, replacements):
     print(f"Updated {file_path}")
 
 def main():
-    workflows_dir = Path("../.github/workflows")
+    workflows_dir = Path(".github/workflows")
     replacements = {
         'bucket-name': "portal",
         'bucket-key': "portal",
