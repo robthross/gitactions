@@ -13,11 +13,9 @@ jobs:
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
-        repository: robthross/gitactions
-        path: remote_actions
-        ref: develop
-
-
+        repository: robthross/static_website
+        path: remote_repo
+        ref: main
 
 
     - name: Checkout repositório atual
@@ -29,9 +27,9 @@ jobs:
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
-        repository: robthross/static_website
-        path: remote_repo
-        ref: main
+        repository: robthross/gitactions
+        path: remote_actions
+        ref: develop
 
 
     - name: Configura Ambiente Python
