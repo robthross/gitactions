@@ -2,12 +2,6 @@ name: Compara Templates
 
 on:
   workflow_call:
-    secrets:
-      PAT_TOKEN:
-        required: true
-    
-
-      
 
 jobs:
   compara_diretorios:
