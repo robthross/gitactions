@@ -2,12 +2,6 @@ name: Compara Templates
 
 on:
   workflow_call:
-    secrets:
-      PAT_TOKEN:
-        required: true
-    
-
-      
 
 jobs:
   compara_diretorios:
@@ -62,6 +56,4 @@ jobs:
         else
           echo "Sem mudanças para comitar"
         fi
-      env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
     continue-on-error: true
