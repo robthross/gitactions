@@ -16,7 +16,16 @@ jobs:
         repository: robthross/gitactions
         path: remote_actions
         ref: develop
-    
+
+
+
+
+    - name: Checkout repositório atual
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
@@ -24,8 +33,6 @@ jobs:
         path: remote_repo
         ref: main
 
-    - name: Checkout repositório atual
-      uses: actions/checkout@v4
 
     - name: Configura Ambiente Python
       uses: actions/setup-python@v4
