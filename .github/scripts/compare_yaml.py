@@ -41,7 +41,7 @@ def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
         if not local_file.exists():
             print(f"New file {relative_path} found in remote repository. Copying to local.")
             shutil.copy2(remote_file, local_file)
-            files_changed = False
+            files_changed = True
         else:
             if compare_yaml(local_file, remote_file, fixed_keys):
                 print(f"Differences found in {relative_path}. Syncing changes.")
@@ -49,7 +49,7 @@ def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
                 files_changed = True
 
     if files_changed:
-        print("Differences were found and synchronized. Pipeline will be aborted.")
+        print("Differences were found and synchronized. Pipeline will be make push.")
     else:
         print("No differences found. Pipeline will continue.")
 
