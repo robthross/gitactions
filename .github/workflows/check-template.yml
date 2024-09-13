@@ -19,6 +19,8 @@ jobs:
     
     - name: Checkout repositório atual
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
 
     - name: Checkout repositório remoto
       uses: actions/checkout@v4

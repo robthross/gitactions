@@ -54,8 +54,8 @@ def compare_and_sync_directories(local_dir, remote_dir, fixed_keys):
         print("No differences found. Pipeline will continue.")
 
 def main():
-    local_dir = ".github"
-    remote_dir = "remote_repo/.github"
+    local_dir = "../.github"
+    remote_dir = "../remote_repo/.github"
     fixed_keys = ["bucket-name", "bucket-key", "node-version"]
 
     compare_and_sync_directories(local_dir, remote_dir, fixed_keys)
