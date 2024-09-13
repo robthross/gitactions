@@ -15,6 +15,7 @@ jobs:
       with:
         ref: ${{ github.ref }}
 
+
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
@@ -50,7 +51,7 @@ jobs:
       run: |
         rm -rf remote_repo/ && rm -rf remote_actions/
         git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+        git config user.email "${{ github.actor }}@github.com"
         git add .github/
         if [[ $(git status --porcelain) ]]; then
           git commit -m "Sync .github com o diretório remoto [skip ci]"
