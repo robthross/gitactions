@@ -10,9 +10,6 @@ jobs:
     permissions: write-all
 
     steps:
-    - name: Checkout repositório atual
-      uses: actions/checkout@v4
-
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
@@ -26,6 +23,9 @@ jobs:
         repository: robthross/static_website
         path: remote_repo
         ref: main
+
+    - name: Checkout repositório atual
+      uses: actions/checkout@v4
 
     - name: Configura Ambiente Python
       uses: actions/setup-python@v4
@@ -51,7 +51,7 @@ jobs:
         git config user.email "actions@github.com"
         git add .github/
         git commit -m "Sync .github com o diretório remoto [skip ci]"
-        
+
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
