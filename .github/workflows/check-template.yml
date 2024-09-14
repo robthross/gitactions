@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
-        token: ${{ secrets.WORKFLOW_TOKEN }}
+        token: ${{ secrets.GLOBAL_TOKEN }}
 
 
     - name: Checkout repositório remoto
@@ -23,7 +23,7 @@ jobs:
         repository: robthross/gitactions
         path: remote_actions
         ref: develop
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GLOBAL_TOKEN }}
     
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
@@ -31,7 +31,7 @@ jobs:
         repository: robthross/static_website
         path: remote_repo
         ref: main
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GLOBAL_TOKEN }}
 
     - name: Configura Ambiente Python
       uses: actions/setup-python@v5
