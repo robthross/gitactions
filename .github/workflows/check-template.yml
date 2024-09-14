@@ -7,8 +7,6 @@ jobs:
   compara_diretorios:
     runs-on: ubuntu-latest
 
-    permissions: write-all
-
     steps:
     - name: Checkout repositório atual
       uses: actions/checkout@v4
