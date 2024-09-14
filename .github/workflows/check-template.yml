@@ -13,11 +13,17 @@ jobs:
     - name: Checkout repositório atual
       uses: actions/checkout@v4
       with:
+        persist-credentials: false
+        fetch-depth: 0
         ref: ${{ github.ref }}
+        token: ${{ secrets.GLOBAL_TOKEN }}
+
 
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
+        persist-credentials: false
+        fetch-depth: 0
         repository: robthross/gitactions
         path: remote_actions
         ref: develop
@@ -26,6 +32,8 @@ jobs:
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
       with:
+        persist-credentials: false
+        fetch-depth: 0
         repository: robthross/static_website
         path: remote_repo
         ref: main
