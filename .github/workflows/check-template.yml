@@ -14,8 +14,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         ref: ${{ github.ref }}
-        token: ${{ secrets.GLOBAL_TOKEN }}
-
 
     - name: Checkout repositório remoto
       uses: actions/checkout@v4
